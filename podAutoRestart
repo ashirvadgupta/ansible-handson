@@ -1,0 +1,8 @@
+#!/bin/bash
+oc login $1 -u $2 -p $3
+oc project $4
+PODS=$(oc get pods  | awk '{print $1}')
+for pod in $PODS
+do
+    oc logs $pod | grep java.lang.OutofMemoryError && oc delete pod $pod 
+done;

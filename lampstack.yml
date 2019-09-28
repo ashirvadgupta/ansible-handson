@@ -1,0 +1,22 @@
+---
+- name: Install Apache, PHP and MySQL
+  hosts: test-servers
+  become: true
+  become_user: root
+  gather_facts: true
+  tasks:
+    - name: "Install Apache2"
+     package: name=httpd state=latest
+    - name: "Install php"
+      package: name=php state=latest
+    - name: "Install MySQL Server"
+     package: name=mysql state=latest
+    - name: "Install php-gd"
+     package: name=php-gd state=latest
+    - name: "Install php-mysql"
+     package: name=php-mysql state=latest
+      notify: 
+        - restart apache2
+  handlers:
+    - name: "restart apache2"
+      service: name=httpd state=restarted
